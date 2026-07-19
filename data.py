@@ -27,3 +27,10 @@ PREFERENCES = {
     "ハーフリング": ["甘味", "野菜"],
     "精霊": ["野菜", "その他"]
 }
+RECIPES = {
+    ("ドラゴンの肉", "光るキノコ"): {"name": "灼熱の竜肉と蓄光茸のシチュー", "trait": "寒さ耐性", "image": "images/dragon_mushroom.png"},
+    ("妖精のハチミツ", "エルフの聖なるハーブ"): {"name": "妖精のハーブティー", "trait": "癒やし効果", "image": "images/fairy_tea.png"},
+    # ... 他の組み合わせも同様に定義 ...
+    # デフォルトの料理（未定義の組み合わせ用）
+    "default": {"name": "まかない料理", "trait": "普通", "image": "images/default.png"}
+}
