@@ -27,7 +27,7 @@ if st.button("料理を提供する！"):
         pref = PREFERENCES[st.session_state.current_customer]
         for item in selected:
             if INGREDIENTS[item]["type"] in pref:
-                score_gain += 10
+                score_gain += (10 * INGREDIENTS[item]["rarity"])
         
         st.session_state.score += score_gain
         st.success(f"評価: {score_gain}点獲得！")
