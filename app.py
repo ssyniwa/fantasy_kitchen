@@ -43,7 +43,7 @@ if st.button("料理を提供する！"):
         
         # 画像表示
         try:
-            st.image(recipe['image'], width=300)
+            st.image(recipe['image'], width=600)
         except:
             st.warning("画像が見つかりません")
         
