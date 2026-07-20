@@ -60,7 +60,7 @@ if st.button("料理を提供する！"):
     else:
         # 食材をソートしてレシピキーを作成
         recipe_key = tuple(sorted(selected))
-        recipe = RECIPES.get(recipe_key, RECIPES["default"])
+        recipe = RECIPES.get(recipe_key)
         # 評価ロジック
         score_gain = 0
         pref = PREFERENCES[st.session_state.current_customer]
