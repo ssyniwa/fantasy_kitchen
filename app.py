@@ -76,11 +76,7 @@ if st.button("料理を提供する！"):
         st.subheader("提供した料理")
         st.write(f"### {recipe['name']}")
         st.info(f"特徴: {recipe['trait']}")
-        st.write(f"現在のディレクトリ: {os.getcwd()}")
-        if os.path.exists("images"):
-            st.write(f"imagesフォルダの中身: {os.listdir('images')}")
-        else:
-            st.write("エラー: 'images' というフォルダが見つかりません。")
+        
         # 画像表示
         
         st.image(recipe['image'], width=600)
