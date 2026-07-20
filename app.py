@@ -36,7 +36,7 @@ RECIPES = {
     ("ドラゴンの肉", "エルフの聖なるハーブ"): {"name": "ドラゴン・タルタルステーキ", "trait": "素材の生命力をそのまま味わう、贅沢な一品です。効果: 身体の重さを取り払い、驚異的な跳躍力や俊敏さを授けてくれます。高い崖を登る際や、素早い敵との戦いにおいて真価を発揮するでしょう。", "image": "images/dragon_tea.png"},
     ("妖精のハチミツ", "エルフの聖なるハーブ"): {"name": "妖精のハーブティー", "trait": "癒やし効果", "image": "images/fairy_tea.png"},
     
-    "default": {"name": "まかない料理", "trait": "普通", "image": "images/default.png"},
+    
 }
 st.set_page_config(page_title="ファンタジーキッチン")
 
