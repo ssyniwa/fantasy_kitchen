@@ -93,7 +93,9 @@ if st.button("料理を提供する！"):
     else:
         # 食材をソートしてレシピキーを作成
         recipe_key = tuple(sorted(selected))
-        recipe = RECIPES.get(recipe_key,tuple(selected))
+        # 定義されていない組み合わせの場合の安全なフォールバック
+        recipe = RECIPES.get(recipe_key, tuple(selected))
+        
         # 評価ロジック
         score_gain = 0
         pref = PREFERENCES[st.session_state.current_customer]
@@ -104,20 +106,23 @@ if st.button("料理を提供する！"):
         st.session_state.score += score_gain
         st.success(f"評価: {score_gain}点獲得！")
         
-        # 料理画像の表示（食材の組み合わせに応じたファイル名で管理）
-        # 例: images/肉_キノコ.png など
+        # 提供した料理の表示
         st.subheader("提供した料理")
         st.write(f"### {recipe['name']}")
         st.info(f"特徴: {recipe['trait']}")
         
         # 画像表示
-        
         st.image(recipe['image'], width=600)
         
-        
-        # 次の客へ
-        if st.button("次の客へ"):
-            st.session_state.current_customer = random.choice(RACES)
-            # 次の客の好みを新しく再設定するためのフラグを立てる
-            st.session_state.customer_wishes = list(set(PREFERENCES[st.session_state.current_customer]))
-            st.rerun()
+        # 料理を提供した後に「次の客へ進むフラグ」を立てる、またはセッションに保存
+        st.session_state.ready_for_next = True
+
+# --- 「次の客へ」ボタンを独立して配置 ---
+if st.session_state.get('ready_for_next', False):
+    if st.button("次の客へ進む"):
+        # 新しい客をランダムに抽選
+        st.session_state.current_customer = random.choice(RACES)
+        # 次の客の好みを新しく再設定するフラグを立てる
+        st.session_state.reset_wish = True
+        st.session_state.ready_for_next = False
+        st.rerun()
