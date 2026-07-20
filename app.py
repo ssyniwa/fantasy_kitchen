@@ -2,6 +2,7 @@ import streamlit as st
 import random
 from data import INGREDIENTS, RACES, PREFERENCES, RECIPES
 
+
 st.set_page_config(page_title="ファンタジーキッチン")
 
 # セッション状態の初期化
