@@ -82,10 +82,9 @@ if st.button("料理を提供する！"):
         else:
             st.write("エラー: 'images' というフォルダが見つかりません。")
         # 画像表示
-        try:
-            st.image(recipe['image'], width=600)
-        except:
-            st.warning("画像が見つかりません")
+        
+        st.image(recipe['image'], width=600)
+        
         
         # 次の客へ
         if st.button("次の客へ"):
