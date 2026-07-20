@@ -1,6 +1,6 @@
 import streamlit as st
 import random
-from data import INGREDIENTS, RACES, PREFERENCES, RECIPES
+from data import  RACES, PREFERENCES, RECIPES
 
 
 st.set_page_config(page_title="ファンタジーキッチン")
