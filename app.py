@@ -71,7 +71,17 @@ if 'score' not in st.session_state:
 st.title("🧙‍♂️ ファンタジーキッチンへようこそ！")
 st.sidebar.metric("現在の評価合計", st.session_state.score)
 
+if 'customer_wishes' not in st.session_state or st.session_state.get('reset_wish', False):
+    # その種族の好みから、いくつか（または全部）を要望としてランダムにピックアップ
+    customer_pref_list = PREFERENCES[st.session_state.current_customer]
+    # 重複を除いて最大2つまで要望として提示
+    st.session_state.customer_wishes = list(set(customer_pref_list))
+    st.session_state.reset_wish = False
+
 st.subheader(f"来店中の客: {st.session_state.current_customer}")
+# 客の好みをセリフ風に表示
+wishes_str = "、または".join(st.session_state.customer_wishes)
+st.info(f"🗣️ 「私は **{wishes_str}** が使われた料理が食べたいな！」")
 st.write(f"{st.session_state.current_customer}さんが注文を考えています...")
 
 # 食材選択
@@ -108,4 +118,6 @@ if st.button("料理を提供する！"):
         # 次の客へ
         if st.button("次の客へ"):
             st.session_state.current_customer = random.choice(RACES)
+            # 次の客の好みを新しく再設定するためのフラグを立てる
+            st.session_state.customer_wishes = list(set(PREFERENCES[st.session_state.current_customer]))
             st.rerun()
