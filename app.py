@@ -77,12 +77,16 @@ if st.session_state.game_over:
     # 合計点による結果（ランク）の分岐
     if final_score >= 400:
         st.success("🌟 【伝説の三つ星シェフ】王国中から客が押し寄せる大繁盛店になりました！王族も大絶賛です！")
+        st.image("images/shop1.png", width=600)
     elif final_score >= 250:
         st.info("⭐ 【人気繁盛店】多くの種族に愛される素晴らしい料理店になりました。常連客もたくさんです！")
+        st.image("images/shop2.png", width=600)
     elif final_score >= 100:
         st.warning("🧑‍🍳 【普通の料理店】まずまずの評判です。もっと色々な種族の好みを研究してみましょう！")
+        st.image("images/shop3.png", width=600)
     else:
         st.error("💦 【閑古鳥が鳴くお店】好みに合わない料理ばかり出してしまい、お客さんが逃げていしまいました…。再挑戦しよう！")
+        st.image("images/shop4.png", width=600)
         
     # もう一度遊ぶボタン
     if st.button("もう一度最初から遊ぶ"):
