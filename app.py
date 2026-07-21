@@ -151,9 +151,13 @@ else:
             st.error("食材を2つ選んでください！")
         else:
             st.session_state.turn_count += 1
-            recipe_key = tuple(sorted(selected))
-            # 定義されていない組み合わせの場合の安全なフォールバック
-            recipe = RECIPES.get(recipe_key, tuple(selected))
+            recipe_key1 = (selected[0], selected[1])
+            recipe_key2 = (selected[1], selected[0])
+            
+            if recipe_key1 in RECIPES:
+                recipe = RECIPES[recipe_key1]
+            elif recipe_key2 in RECIPES:
+                recipe = RECIPES[recipe_key2]
             
             # 評価ロジック
             score_gain = 0
