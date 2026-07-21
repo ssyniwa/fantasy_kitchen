@@ -67,62 +67,92 @@ st.set_page_config(page_title="ファンタジーキッチン")
 if 'score' not in st.session_state:
     st.session_state.score = 0
     st.session_state.current_customer = random.choice(RACES)
-
-st.title("🧙‍♂️ ファンタジーキッチンへようこそ！")
-st.sidebar.metric("現在の評価合計", st.session_state.score)
-
-if 'customer_wishes' not in st.session_state or st.session_state.get('reset_wish', False):
-    # その種族の好みから、いくつか（または全部）を要望としてランダムにピックアップ
-    customer_pref_list = PREFERENCES[st.session_state.current_customer]
-    # 重複を除いて最大2つまで要望として提示
-    st.session_state.customer_wishes = list(set(customer_pref_list))
-    st.session_state.reset_wish = False
-
-st.subheader(f"来店中の客: {st.session_state.current_customer}")
-# 客の好みをセリフ風に表示
-wishes_str = "、または".join(st.session_state.customer_wishes)
-st.info(f"🗣️ 「私は **{wishes_str}** が使われた料理が食べたいな！」")
-st.write(f"{st.session_state.current_customer}さんが注文を考えています...")
-
-# 食材選択
-selected = st.multiselect("食材を2つ選んでください", list(INGREDIENTS.keys()), max_selections=2)
-
-if st.button("料理を提供する！"):
-    if len(selected) != 2:
-        st.error("食材を2つ選んでください！")
+    st.session_state.turn_count = 0  # 追加: 提供回数のカウント
+    st.session_state.game_over = False  # 追加: ゲーム終了フラグ
+if st.session_state.game_over:
+    st.header("🎉 営業終了！本日の結果発表 🏆")
+    final_score = st.session_state.score
+    st.metric("最終評価合計", f"{final_score} 点")
+    
+    # 合計点による結果（ランク）の分岐
+    if final_score >= 400:
+        st.success("🌟 【伝説の三つ星シェフ】王国中から客が押し寄せる大繁盛店になりました！王族も大絶賛です！")
+    elif final_score >= 250:
+        st.info("⭐ 【人気繁盛店】多くの種族に愛される素晴らしい料理店になりました。常連客もたくさんです！")
+    elif final_score >= 100:
+        st.warning("🧑‍🍳 【普通の料理店】まずまずの評判です。もっと色々な種族の好みを研究してみましょう！")
     else:
-        # 食材をソートしてレシピキーを作成
-        recipe_key = tuple(sorted(selected))
-        # 定義されていない組み合わせの場合の安全なフォールバック
-        recipe = RECIPES.get(recipe_key, tuple(selected))
+        st.error("💦 【閑古鳥が鳴くお店】好みに合わない料理ばかり出してしまい、お客さんが逃げていしまいました…。再挑戦しよう！")
         
-        # 評価ロジック
-        score_gain = 0
-        pref = PREFERENCES[st.session_state.current_customer]
-        for item in selected:
-            if INGREDIENTS[item]["type"] in pref:
-                score_gain += (10 * INGREDIENTS[item]["rarity"])
-        
-        st.session_state.score += score_gain
-        st.success(f"評価: {score_gain}点獲得！")
-        
-        # 提供した料理の表示
-        st.subheader("提供した料理")
-        st.write(f"### {recipe['name']}")
-        st.info(f"特徴: {recipe['trait']}")
-        
-        # 画像表示
-        st.image(recipe['image'], width=600)
-        
-        # 料理を提供した後に「次の客へ進むフラグ」を立てる、またはセッションに保存
-        st.session_state.ready_for_next = True
-
-# --- 「次の客へ」ボタンを独立して配置 ---
-if st.session_state.get('ready_for_next', False):
-    if st.button("次の客へ進む"):
-        # 新しい客をランダムに抽選
+    # もう一度遊ぶボタン
+    if st.button("もう一度最初から遊ぶ"):
+        st.session_state.score = 0
         st.session_state.current_customer = random.choice(RACES)
-        # 次の客の好みを新しく再設定するフラグを立てる
+        st.session_state.turn_count = 0
+        st.session_state.game_over = False
         st.session_state.reset_wish = True
-        st.session_state.ready_for_next = False
         st.rerun()
+
+# --- 通常のゲームプレイ画面 ---
+else:
+    # 残り回数の表示
+    st.sidebar.metric("現在の評価合計", st.session_state.score)
+    st.sidebar.write(f"残り提供回数: {10 - st.session_state.turn_count} 回")
+    st.title("🧙‍♂️ ファンタジーキッチンへようこそ！")
+    st.sidebar.metric("現在の評価合計", st.session_state.score)
+    
+    if 'customer_wishes' not in st.session_state or st.session_state.get('reset_wish', False):
+        # その種族の好みから、いくつか（または全部）を要望としてランダムにピックアップ
+        customer_pref_list = PREFERENCES[st.session_state.current_customer]
+        # 重複を除いて最大2つまで要望として提示
+        st.session_state.customer_wishes = list(set(customer_pref_list))
+        st.session_state.reset_wish = False
+    
+    st.subheader(f"来店中の客: {st.session_state.current_customer}")
+    # 客の好みをセリフ風に表示
+    wishes_str = "、または".join(st.session_state.customer_wishes)
+    st.info(f"🗣️ 「私は **{wishes_str}** が使われた料理が食べたいな！」")
+    st.write(f"{st.session_state.current_customer}さんが注文を考えています...")
+    
+    # 食材選択
+    selected = st.multiselect("食材を2つ選んでください", list(INGREDIENTS.keys()), max_selections=2)
+    
+    if st.button("料理を提供する！"):
+        if len(selected) != 2:
+            st.error("食材を2つ選んでください！")
+        else:
+            # 食材をソートしてレシピキーを作成
+            recipe_key = tuple(sorted(selected))
+            # 定義されていない組み合わせの場合の安全なフォールバック
+            recipe = RECIPES.get(recipe_key, tuple(selected))
+            
+            # 評価ロジック
+            score_gain = 0
+            pref = PREFERENCES[st.session_state.current_customer]
+            for item in selected:
+                if INGREDIENTS[item]["type"] in pref:
+                    score_gain += (10 * INGREDIENTS[item]["rarity"])
+            
+            st.session_state.score += score_gain
+            st.success(f"評価: {score_gain}点獲得！")
+            
+            # 提供した料理の表示
+            st.subheader("提供した料理")
+            st.write(f"### {recipe['name']}")
+            st.info(f"特徴: {recipe['trait']}")
+            
+            # 画像表示
+            st.image(recipe['image'], width=600)
+            
+            # 料理を提供した後に「次の客へ進むフラグ」を立てる、またはセッションに保存
+            st.session_state.ready_for_next = True
+    
+    # --- 「次の客へ」ボタンを独立して配置 ---
+    if st.session_state.get('ready_for_next', False):
+        if st.button("次の客へ進む"):
+            # 新しい客をランダムに抽選
+            st.session_state.current_customer = random.choice(RACES)
+            # 次の客の好みを新しく再設定するフラグを立てる
+            st.session_state.reset_wish = True
+            st.session_state.ready_for_next = False
+            st.rerun()
