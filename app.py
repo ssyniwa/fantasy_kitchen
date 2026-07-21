@@ -127,7 +127,7 @@ else:
     # 種族の画像を表示（画像サイズはお好みで width を調整してください）
     # 万が一ファイルが見つからない場合のフォールバックとして .get を使っています
     customer_img = RACE_IMAGES.get(current_race, "images/human.png")
-    st.image(customer_img, width=600)
+    st.image(customer_img, width=400)
     # 客の好みをセリフ風に表示
     wishes_str = "、または".join(st.session_state.customer_wishes)
     st.info(f"🗣️ 「私は **{wishes_str}** が使われた料理が食べたいな！」")
