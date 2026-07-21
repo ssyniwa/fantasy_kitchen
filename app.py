@@ -16,7 +16,16 @@ INGREDIENTS = {
 
 # 8種類の種族
 RACES = ["人間", "エルフ", "ドワーフ", "オーク", "魔法使い", "獣人", "ハーフリング", "精霊"]
-
+RACE_IMAGES = {
+    "人間": "images/human.png",
+    "エルフ": "images/elf.png",
+    "ドワーフ": "images/dwarf.png",
+    "オーク": "images/orc.png",
+    "魔法使い": "images/wizard.png",
+    "獣人": "images/beast.png",
+    "ハーフリング": "images/halfling.png",
+    "精霊": "images/spirit.png"
+}
 # 各種族の「好きなタイプ」の傾向
 # 複数のタイプを設定すると、客の反応が多様になります
 PREFERENCES = {
@@ -112,11 +121,17 @@ else:
         st.session_state.customer_wishes = list(set(customer_pref_list))
         st.session_state.reset_wish = False
     
-    st.subheader(f"来店中の客: {st.session_state.current_customer}")
+    current_race = st.session_state.current_customer
+    st.subheader(f"来店中の客 ({st.session_state.turn_count + 1}/10回目): {current_race}")
+    
+    # 種族の画像を表示（画像サイズはお好みで width を調整してください）
+    # 万が一ファイルが見つからない場合のフォールバックとして .get を使っています
+    customer_img = RACE_IMAGES.get(current_race, "images/human.png")
+    st.image(customer_img, width=600)
     # 客の好みをセリフ風に表示
     wishes_str = "、または".join(st.session_state.customer_wishes)
     st.info(f"🗣️ 「私は **{wishes_str}** が使われた料理が食べたいな！」")
-    st.write(f"{st.session_state.current_customer}さんが注文を考えています...")
+    
     
     # 食材選択
     selected = st.multiselect("食材を2つ選んでください", list(INGREDIENTS.keys()), max_selections=2)
