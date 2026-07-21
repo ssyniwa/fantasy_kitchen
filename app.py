@@ -24,7 +24,7 @@ RACE_IMAGES = {
     "魔法使い": "images/wizard.png",
     "獣人": "images/beast.png",
     "ハーフリング": "images/halfling.png",
-    "精霊": "images/spirit.png"
+    "精霊": "images/spirit.png",
 }
 # 各種族の「好きなタイプ」の傾向
 # 複数のタイプを設定すると、客の反応が多様になります
