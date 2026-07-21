@@ -121,7 +121,7 @@ else:
         if len(selected) != 2:
             st.error("食材を2つ選んでください！")
         else:
-            # 食材をソートしてレシピキーを作成
+            st.session_state.turn_count += 1
             recipe_key = tuple(sorted(selected))
             # 定義されていない組み合わせの場合の安全なフォールバック
             recipe = RECIPES.get(recipe_key, tuple(selected))
@@ -145,7 +145,13 @@ else:
             st.image(recipe['image'], width=600)
             
             # 料理を提供した後に「次の客へ進むフラグ」を立てる、またはセッションに保存
-            st.session_state.ready_for_next = True
+            # 3. 10回に達したかチェックして終了フラグを立てる
+            if st.session_state.turn_count >= 10:
+                st.session_state.game_over = True
+                st.rerun() # 10回目に達したら即座に結果画面へリロード
+            else:
+                # 料理を提供した後に「次の客へ進むフラグ」を立てる
+                st.session_state.ready_for_next = True
     
     # --- 「次の客へ」ボタンを独立して配置 ---
     if st.session_state.get('ready_for_next', False):
