@@ -10,16 +10,16 @@ INGREDIENTS = {
     "グリフォンの胸肉": {"type": "肉類", "rarity": 4},
     "光るキノコ": {"type": "野菜", "rarity": 3},
     "エルフの聖なるハーブ": {"type": "野菜", "rarity": 4},
-    "マンドラゴラの根": {"type": "野菜", "rarity": 3},
+    "マンドラゴラの根": {"type": "野菜", "rarity": 4},
     "月夜の白トリュフ": {"type": "野菜", "rarity": 5},
     "妖精のハチミツ": {"type": "甘味", "rarity": 4},
     "魔力のクリスタルシュガー": {"type": "甘味", "rarity": 5},
     "スライムのゼリー": {"type": "甘味", "rarity": 3},
-    "クラウド・コットン": {"type": "甘味", "rarity": 3},
+    "クラウド・コットン": {"type": "甘味", "rarity": 4},
     "深海魚の鱗": {"type": "魚類", "rarity": 3},
     "人魚の尾びれ": {"type": "魚類", "rarity": 4},
     "クラーケンの足肉": {"type": "魚類", "rarity": 5},
-    "電気ウナギ": {"type": "魚類", "rarity": 3},
+    "電気ウナギ": {"type": "魚類", "rarity": 4},
 }
 
 # 8種類の種族
@@ -184,10 +184,10 @@ if st.session_state.game_over:
     st.metric("最終評価合計", f"{final_score} 点")
     
     # 合計点による結果（ランク）の分岐
-    if final_score >= 780:
+    if final_score >= 800:
         st.success("🌟 【伝説の三つ星シェフ】王国中から客が押し寄せる大繁盛店になりました！王族も大絶賛です！")
         st.image("images/shop1.png", width=600)
-    elif final_score >= 500:
+    elif final_score >= 600:
         st.info("⭐ 【人気繁盛店】多くの種族に愛される素晴らしい料理店になりました。常連客もたくさんです！")
         st.image("images/shop2.png", width=600)
     elif final_score >= 300:
